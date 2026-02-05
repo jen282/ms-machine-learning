@@ -1,0 +1,15 @@
+import numpy as np
+import pandas as pd
+from sklearn.decomposition import PCA
+
+def azureml_main(dataframe1 = None, dataframe2 = None):
+
+    batters = pd.DataFrame(dataframe1, columns=dataframe1.columns)
+    pca = PCA(n_components=8)
+    pca.fit(batters.iloc[:,1:])
+    X_pca = pca.transform(batters.iloc[:,1:])
+
+    extracted = pd.DataFrame(X_pca[:,0:8], columns=['PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'PC6', 'PC7', 'PC8'])
+    extracted.insert(0, 'YrPlayer', batters['YrPlayer'])
+    
+    return extracted
